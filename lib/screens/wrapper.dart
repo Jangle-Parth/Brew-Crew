@@ -1,3 +1,4 @@
+import 'package:brewcrew/screens/authenticate/authenticate.dart';
 import 'package:brewcrew/screens/home/home.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -7,6 +8,6 @@ class Wrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Home();
+    return Authenticate();
   }
 }
