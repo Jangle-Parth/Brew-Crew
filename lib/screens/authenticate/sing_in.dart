@@ -2,7 +2,8 @@ import 'package:brewcrew/services/auth.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+  const SignIn({super.key, required this.toggleView});
+  final Function toggleView;
 
   @override
   State<SignIn> createState() => _SignInState();
@@ -20,6 +21,15 @@ class _SignInState extends State<SignIn> {
         backgroundColor: Colors.brown[400],
         elevation: 0.0,
         title: const Text('Sign In'),
+        actions: <Widget>[
+          TextButton.icon(
+            onPressed: () {
+              widget.toggleView();
+            },
+            icon: const Icon(Icons.person),
+            label: const Text('Register'),
+          )
+        ],
       ),
       body: Container(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 50),

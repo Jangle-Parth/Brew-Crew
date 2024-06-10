@@ -2,7 +2,8 @@ import 'package:brewcrew/services/auth.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
-  const Register({super.key});
+  const Register({super.key, required this.toggleView});
+  final Function toggleView;
 
   @override
   State<Register> createState() => _RegisterState();
@@ -10,8 +11,10 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
+  String error = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,15 +23,26 @@ class _RegisterState extends State<Register> {
         backgroundColor: Colors.brown[400],
         elevation: 0.0,
         title: const Text('Register'),
+        actions: <Widget>[
+          TextButton.icon(
+            onPressed: () {
+              widget.toggleView();
+            },
+            icon: const Icon(Icons.person),
+            label: const Text('Sign In'),
+          )
+        ],
       ),
       body: Container(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 50),
           child: Form(
+            key: _formKey,
             child: Column(children: [
               const SizedBox(
                 height: 30,
               ),
               TextFormField(
+                validator: (val) => val!.isEmpty ? 'Enter an Email' : null,
                 onChanged: (val) {
                   setState(() {
                     email = val;
@@ -39,6 +53,8 @@ class _RegisterState extends State<Register> {
                 height: 20,
               ),
               TextFormField(
+                validator: (val) =>
+                    val!.length < 6 ? 'Enter a password 6+ chars' : null,
                 obscureText: true,
                 onChanged: (val) {
                   setState(() {
@@ -51,8 +67,15 @@ class _RegisterState extends State<Register> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  print(email);
-                  print(password);
+                  if (_formKey.currentState!.validate()) {
+                    dynamic result = await _auth.registerWithEmailAndPassword(
+                        email, password);
+                    if (result == null) {
+                      setState(() {
+                        error = 'Pls Provide a Valid Email';
+                      });
+                    }
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple[400]),
