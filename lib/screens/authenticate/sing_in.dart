@@ -11,8 +11,11 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
+
   String email = '';
   String password = '';
+  String error = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,11 +37,13 @@ class _SignInState extends State<SignIn> {
       body: Container(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 50),
           child: Form(
+            key: _formKey,
             child: Column(children: [
               const SizedBox(
                 height: 30,
               ),
               TextFormField(
+                validator: (val) => val!.isEmpty ? 'Enter an Email' : null,
                 onChanged: (val) {
                   setState(() {
                     email = val;
@@ -49,6 +54,8 @@ class _SignInState extends State<SignIn> {
                 height: 20,
               ),
               TextFormField(
+                validator: (val) =>
+                    val!.length < 6 ? 'Enter a password 6+ chars' : null,
                 obscureText: true,
                 onChanged: (val) {
                   setState(() {
@@ -61,8 +68,15 @@ class _SignInState extends State<SignIn> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  print(email);
-                  print(password);
+                  if (_formKey.currentState!.validate()) {
+                    dynamic result =
+                        await _auth.SignInWithEmailAndPassword(email, password);
+                    if (result == null) {
+                      setState(() {
+                        error = 'Email or Password is Incorrect';
+                      });
+                    }
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple[400]),
