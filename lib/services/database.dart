@@ -16,6 +16,7 @@ class DatabaseService {
 
   List<Brew> _brewListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
+      print('Brew: ${doc.data()}');
       return Brew(
           name: doc['name'] ?? '',
           sugars: doc['sugars'] ?? '0',
