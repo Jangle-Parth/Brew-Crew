@@ -31,6 +31,15 @@ class _SettingsFormState extends State<SettingsForm> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             UserData? userData = snapshot.data!;
+            if (_currentName.isEmpty) {
+              _currentName = userData.name;
+            }
+            if (_currentSugars == '0') {
+              _currentSugars = userData.sugars;
+            }
+            if (_currentStrength == 100) {
+              _currentStrength = userData.strength;
+            }
 
             return Form(
               key: _formKey,
@@ -44,14 +53,12 @@ class _SettingsFormState extends State<SettingsForm> {
                     height: 20,
                   ),
                   TextFormField(
-                    initialValue: _currentName,
+                    initialValue: userData.name,
                     decoration: textInputDecoration,
                     validator: (value) =>
                         value!.isEmpty ? 'Pls Enter Name' : null,
                     onChanged: (value) => setState(() {
                       _currentName = value;
-                      _currentSugars = userData.sugars;
-                      _currentStrength = userData.strength;
                     }),
                   ),
                   const SizedBox(
@@ -69,8 +76,6 @@ class _SettingsFormState extends State<SettingsForm> {
                     onChanged: (value) {
                       setState(() {
                         _currentSugars = value!;
-                        _currentName = userData.name;
-                        _currentStrength = userData.strength;
                       });
                     },
                   ),
@@ -84,8 +89,6 @@ class _SettingsFormState extends State<SettingsForm> {
                       onChanged: (value) {
                         setState(() {
                           _currentStrength = value.round();
-                          _currentName = userData.name;
-                          _currentSugars = userData.sugars;
                         });
                       }),
                   TextButton(

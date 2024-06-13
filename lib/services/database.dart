@@ -16,7 +16,7 @@ class DatabaseService {
     print(strength);
     return await brewCollection
         .doc(uid)
-        .update({'sugars': sugars, 'name': name, 'strength': strength});
+        .set({'sugars': sugars, 'name': name, 'strength': strength});
   }
 
   List<Brew> _brewListFromSnapshot(QuerySnapshot snapshot) {

@@ -84,8 +84,8 @@ class _RegisterState extends State<Register> {
                           });
                           dynamic result = await _auth
                               .registerWithEmailAndPassword(email, password);
-                          if (result == null) {
-                            if (mounted) {
+                          if (mounted) {
+                            if (result == null) {
                               setState(() {
                                 error = 'Pls Provide a Valid Email';
                                 loading = false;
