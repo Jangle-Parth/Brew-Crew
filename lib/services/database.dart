@@ -10,9 +10,13 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('brews');
 
   Future updateUserData(String sugars, String name, int strength) async {
+    print(uid);
+    print(sugars);
+    print(name);
+    print(strength);
     return await brewCollection
         .doc(uid)
-        .set({'sugars': sugars, 'name': name, 'strength': strength});
+        .update({'sugars': sugars, 'name': name, 'strength': strength});
   }
 
   List<Brew> _brewListFromSnapshot(QuerySnapshot snapshot) {

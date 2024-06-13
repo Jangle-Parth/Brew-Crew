@@ -85,10 +85,12 @@ class _RegisterState extends State<Register> {
                           dynamic result = await _auth
                               .registerWithEmailAndPassword(email, password);
                           if (result == null) {
-                            setState(() {
-                              error = 'Pls Provide a Valid Email';
-                              loading = false;
-                            });
+                            if (mounted) {
+                              setState(() {
+                                error = 'Pls Provide a Valid Email';
+                                loading = false;
+                              });
+                            }
                           }
                         }
                       },
@@ -102,7 +104,10 @@ class _RegisterState extends State<Register> {
                     const SizedBox(
                       height: 12,
                     ),
-                    Text(error),
+                    Text(
+                      error,
+                      style: const TextStyle(color: Colors.red, fontSize: 14.0),
+                    ),
                   ]),
                 )),
           );

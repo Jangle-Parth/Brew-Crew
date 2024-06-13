@@ -23,7 +23,7 @@ class Home extends StatelessWidget {
     }
 
     return StreamProvider<List<Brew>?>.value(
-      initialData: null,
+      initialData: [],
       value: DatabaseService(uid: '').brews,
       child: Scaffold(
         backgroundColor: Colors.brown[50],
@@ -40,15 +40,18 @@ class Home extends StatelessWidget {
               label: const Text('logout'),
             ),
             TextButton.icon(
-              onPressed: () {
-                _showsettings();
-              },
+              onPressed: _showsettings,
               icon: const Icon(Icons.settings),
               label: const Text('Settings'),
             ),
           ],
         ),
-        body: const BrewList(),
+        body: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/coffee_bg.png"),
+                    fit: BoxFit.cover)),
+            child: const BrewList()),
       ),
     );
   }
